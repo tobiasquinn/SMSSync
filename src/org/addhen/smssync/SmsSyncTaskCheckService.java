@@ -38,7 +38,7 @@ public class SmsSyncTaskCheckService extends Service {
     private void startService() {
 
         SmsSyncPref.loadPreferences(SmsSyncTaskCheckService.this);
-        long period = (SmsSyncPref.taskCheckTime * 60000);
+        long period = (SmsSyncPref.taskCheckTime * 1000);
         long delay = 500;
 
         mDoTask = new TimerTask() {

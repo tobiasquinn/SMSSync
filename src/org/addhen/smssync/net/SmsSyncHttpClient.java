@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.addhen.smssync.Util;
 import org.apache.http.HttpResponse;
@@ -39,6 +39,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 public class SmsSyncHttpClient {
 
@@ -119,13 +122,16 @@ public class SmsSyncHttpClient {
     public static String getFromWebService(String url) {
 
         // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
+    	HttpParams httpParameters = new BasicHttpParams();
+    	HttpConnectionParams.setConnectionTimeout(httpParameters, 3500);
+    	HttpConnectionParams.setSoTimeout(httpParameters, 4500);
+        HttpClient httpclient = new DefaultHttpClient(httpParameters);
         final HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("User-Agent", "SMSSync-Android/1.0)");
 
         try {
-            // Execute HTTP Get Request
-            HttpResponse response = httpclient.execute(httpGet);
+            // Execute HTTP Get Request        	
+            HttpResponse response = httpclient.execute(httpGet);            
 
             if (response.getStatusLine().getStatusCode() == 200) {
                 return getText(response);
