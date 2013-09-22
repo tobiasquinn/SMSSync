@@ -112,7 +112,7 @@ public class RunServicesUtil {
             SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
 
             // start the scheduler for 'task check' service
-            final long interval = (Prefs.taskCheckTime * 60000);
+            final long interval = (Prefs.taskCheckTime * 1000);
 
             final Intent intent = new Intent(context,
                     CheckTaskScheduledService.class);
